@@ -1,38 +1,44 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <h1>Dashboard</h1>
 
     <!-- Sales Graphs -->
     <v-row>
-      <v-col v-for="sale in sales" :key="`${sale.title}`">
+      <v-col v-for="sale in sales" :key="`${sale.title}`" cols="12" md="4">
         <SalesGraph :sale="sale" />
       </v-col>
     </v-row>
 
     <!-- Statistic Cards -->
     <v-row>
-      <v-col v-for="statistic in statistics" :key="`${statistic.title}`">
+      <v-col
+        v-for="statistic in statistics"
+        :key="`${statistic.title}`"
+        cols="12"
+        md="6"
+        lg="3"
+      >
         <StatisticCard :statistic="statistic" />
       </v-col>
     </v-row>
 
     <!-- Employees and Timeline -->
     <v-row>
-      <v-col cols="8">
+      <v-col cols="12" md="8">
         <h3>Employees Table</h3>
         <EmployeesTable
           :employees="employees"
           @select-employee="selectEmployee"
         />
       </v-col>
-      <v-col cols="4">
+      <v-col cols="12" md="4">
         <h3>Event Timeline</h3>
         <EventTimeLine :timeline="timeline" />
       </v-col>
     </v-row>
 
     <!-- Snackbar -->
-    <v-snackbar v-model="snackbar">
+    <v-snackbar v-model="snackbar" :left="$vuetify.breakpoint.lgAndUp">
       {{ text }}
 
       <template v-slot:action="{ attrs }">
