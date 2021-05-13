@@ -1,14 +1,37 @@
 <template>
-  <div class="px-5">
+  <v-container>
     <h1>Dashboard</h1>
-    <v-data-table
-      multi-sort
-      :headers="headers"
-      :items="employees"
-      :items-per-page="5"
-      class="elevation-1"
-      @click:row="handleRowClick"
-    ></v-data-table>
+
+    <!-- Sales Graphs -->
+    <v-row>
+      <v-col v-for="sale in sales" :key="`${sale.title}`">
+        <SalesGraph :sale="sale" />
+      </v-col>
+    </v-row>
+
+    <!-- Statistic Cards -->
+    <v-row>
+      <v-col v-for="statistic in statistics" :key="`${statistic.title}`">
+        <StatisticCard :statistic="statistic" />
+      </v-col>
+    </v-row>
+
+    <!-- Employees and Timeline -->
+    <v-row>
+      <v-col cols="8">
+        <h3>Employees Table</h3>
+        <EmployeesTable
+          :employees="employees"
+          @select-employee="selectEmployee"
+        />
+      </v-col>
+      <v-col cols="4">
+        <h3>Event Timeline</h3>
+        <EventTimeLine :timeline="timeline" />
+      </v-col>
+    </v-row>
+
+    <!-- Snackbar -->
     <v-snackbar v-model="snackbar">
       {{ text }}
 
@@ -18,14 +41,22 @@
         </v-btn>
       </template>
     </v-snackbar>
-  </div>
+  </v-container>
 </template>
 
 <script>
 import employees from "@/data/employees.json";
+import statistics from "@/data/statistics.json";
+import sales from "@/data/sales.json";
+import timeline from "@/data/timeline.json";
+import SalesGraph from "@/components/SalesGraph.vue";
+import StatisticCard from "@/components/StatisticCard.vue";
+import EmployeesTable from "@/components/EmployeesTable.vue";
+import EventTimeLine from "@/components/EventTimeLine.vue";
 export default {
+  components: { EmployeesTable, StatisticCard, SalesGraph, EventTimeLine },
   methods: {
-    handleRowClick(row) {
+    selectEmployee(row) {
       this.text = `${row.name} - ${row.title}`;
       this.snackbar = true;
     },
@@ -33,18 +64,10 @@ export default {
   data: () => ({
     snackbar: false,
     text: "",
-    headers: [
-      {
-        text: "ID",
-        align: "start",
-        sortable: false,
-        value: "id",
-      },
-      { text: "Name", value: "name" },
-      { text: "Title", value: "title" },
-      { text: "Salary", value: "salary" },
-    ],
     employees,
+    statistics,
+    sales,
+    timeline,
   }),
 };
 </script>
