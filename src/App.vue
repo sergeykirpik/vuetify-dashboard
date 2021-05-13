@@ -1,83 +1,36 @@
 <template>
   <v-app>
-    <v-app-bar dark app color="primary">
-      <v-toolbar-title>Vuetify Dashboard</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn text rounded>Home</v-btn>
-      <v-btn text rounded>Login</v-btn>
-    </v-app-bar>
+    <NavBar :links="links" />
     <v-main>
-      <v-row justify="center">
-        <v-card width="400px" class="mt-10">
-          <v-card-title class="pb-3">
-            <h1>Login</h1>
-          </v-card-title>
-          <v-card-text>
-            <v-form>
-              <v-text-field
-                label="Username"
-                prepend-icon="mdi-account-circle"
-              />
-              <v-text-field
-                :type="passwordFieldType"
-                label="Password"
-                prepend-icon="mdi-lock"
-                :append-icon="passwordVisibilityIcon"
-                @click:append="togglePasswordVisibility"
-              />
-            </v-form>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-btn color="success">Register</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="info">Login</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-row>
+      <router-view />
     </v-main>
-    <v-footer color="primary lighten-1" padless>
-      <v-row justify="center" no-gutters>
-        <v-btn
-          v-for="link in links"
-          :key="link"
-          color="white"
-          text
-          rounded
-          class="my-2"
-        >
-          {{ link }}
-        </v-btn>
-        <v-col class="primary lighten-2 py-4 text-center white--text" cols="12">
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-        </v-col>
-      </v-row>
-    </v-footer>
+    <Footer :links="links" />
   </v-app>
 </template>
 
 <script>
+import Footer from "./components/Footer.vue";
+import NavBar from "./components/NavBar.vue";
 export default {
   name: "App",
 
-  components: {},
+  components: { NavBar, Footer },
 
   data: () => ({
-    showPassword: false,
-    links: ["Home", "Login"],
+    links: [
+      {
+        label: "Home",
+        url: "/",
+      },
+      {
+        label: "Login",
+        url: "/login",
+      },
+      {
+        label: "Dashboard",
+        url: "/dashboard",
+      },
+    ],
   }),
-  methods: {
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
-    },
-  },
-  computed: {
-    passwordFieldType() {
-      return this.showPassword ? "text" : "password";
-    },
-    passwordVisibilityIcon() {
-      return this.showPassword ? "mdi-eye" : "mdi-eye-off";
-    },
-  },
 };
 </script>
